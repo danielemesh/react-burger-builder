@@ -3,16 +3,30 @@ import classes from './Burger.css';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
 const Burger = ({ingredients}) => {
-  const transformedIngredients = Object.keys(ingredients)
-      .map(igKey => {
-        return [...Array(ingredients[igKey])].map((_, i) => {
-          return <BurgerIngredient key={`${igKey}_${i}`} type={igKey}/>
-        })
-      });
+  const transformedIngredients = [];
+  let content;
+  
+  Object.keys(ingredients).forEach(igKey => {
+    const len = ingredients[igKey];
+    
+    for (let i = 0; i < len; i++) {
+      transformedIngredients.push(igKey);
+    }
+  });
+  
+  if (!transformedIngredients.length) {
+    content = <p>Please start adding ingredients</p>;
+  }
+  else {
+    content = transformedIngredients.map((igKey, i) => (
+        <BurgerIngredient key={`${igKey}_ ${i}`} type={igKey}/>
+    ));
+  }
+  
   return (
       <div className={classes.Burger}>
         <BurgerIngredient type="bread-top"/>
-        {transformedIngredients}
+        {content}
         <BurgerIngredient type="bread-bottom"/>
       </div>
   );
